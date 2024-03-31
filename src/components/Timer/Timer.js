@@ -12,7 +12,6 @@ const Timer = () => {
   const refreshRate = 30;
 
   const zeroedTimerState = {
-    timeDisplayed: 0,
     timeElapsed: 0,
     startTime: 0,
   };
@@ -34,27 +33,31 @@ const Timer = () => {
         ...timerState,
         timeElapsed:
           performance.now() - timerState.startTime + timerState.timeElapsed,
-        timeDisplayed:
-          performance.now() - timerState.startTime + timerState.timeElapsed,
+
         startTime: performance.now(),
       };
     });
   };
 
   const startTimer = () => {
-    setTimerState((timerState) => {
-      return {
-        ...timerState,
-        startTime: performance.now(),
-      };
-    });
+    if (!intervalState) {
+      setTimerState((timerState) => {
+        return {
+          ...timerState,
+          startTime: performance.now(),
+        };
+      });
 
-    setStateInterval(setInterval(updateTimer, Math.floor(1000 / refreshRate)));
+      setStateInterval(
+        setInterval(updateTimer, Math.floor(1000 / refreshRate))
+      );
+    }
   };
 
   const stopTimer = () => {
     if (intervalState) {
       clearInterval(intervalState);
+      setStateInterval(null);
     }
   };
 
@@ -62,11 +65,12 @@ const Timer = () => {
     setTimerState(zeroedTimerState);
 
     clearInterval(intervalState);
+    setStateInterval(null);
   };
 
   return (
     <div className={(styles1.container, styles.timer)}>
-      <TimeDisplay miliseconds={timerState.timeDisplayed} />
+      <TimeDisplay miliseconds={timerState.timeElapsed} />
       {/* <div className={styles.timeDisplay} miliseconds={time}> */}
 
       <div className={styles.controls}>
