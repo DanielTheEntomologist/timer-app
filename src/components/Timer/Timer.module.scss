@@ -1,5 +1,12 @@
 @import "../../styles/settings.scss";
 
 .timer {
-  background: $color-warning;
+  margin: 10%;
+  border: 1px solid $color-light;
+  border-radius: $radius;
+  .controls {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+  }
 }
