@@ -6,18 +6,18 @@ import styles from "./Timer.module.scss";
 
 import { useState, useEffect } from "react";
 
-const Timer = ({ children, onClick }) => {
-  // const [timeDisplayed, setTimeDisplayed] = useState(0);
+const Timer = () => {
   const [intervalState, setStateInterval] = useState(null);
-  // const [timeElapsed, setTimeElapsed] = useState(0);
 
-  const zeroedTimer = {
+  const refreshRate = 30;
+
+  const zeroedTimerState = {
     timeDisplayed: 0,
     timeElapsed: 0,
     startTime: 0,
   };
 
-  const [timerState, setTimerState] = useState(zeroedTimer);
+  const [timerState, setTimerState] = useState(zeroedTimerState);
 
   // clean interval on unmount
   useEffect(() => {
@@ -30,7 +30,6 @@ const Timer = ({ children, onClick }) => {
 
   const updateTimer = () => {
     setTimerState((timerState) => {
-      console.log("updateTimer", timerState);
       return {
         ...timerState,
         timeElapsed:
@@ -50,7 +49,7 @@ const Timer = ({ children, onClick }) => {
       };
     });
 
-    setStateInterval(setInterval(updateTimer, 1000));
+    setStateInterval(setInterval(updateTimer, Math.floor(1000 / refreshRate)));
   };
 
   const stopTimer = () => {
@@ -60,7 +59,7 @@ const Timer = ({ children, onClick }) => {
   };
 
   const resetTimer = () => {
-    setTimerState(zeroedTimer);
+    setTimerState(zeroedTimerState);
 
     clearInterval(intervalState);
   };
